@@ -1,0 +1,915 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Database,SQL," />
+
+
+
+
+
+  <link rel="alternate" href="http://wwei25.cn" title="Oneway" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.5.0" />
+
+
+
+
+
+
+<meta name="description" content="C语言仍然是一门应用广泛的编程语言，具有简单、高效的优点。而且C语言可以作为我们学习其他编程语言的一个基础。因此编程人员学好C语言是很必要的。那么大家在使用C语言开发项目的过程中是否遇到过使用数据库的问题呢？你是怎么解决的呢？今天我给大家简单介绍嵌入式SQL（Embedded Structured Query Language）技术，顾名思义就是可以嵌入到编程语言中的SQL。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="嵌入式SQL">
+<meta property="og:url" content="http://yoursite.com/2016/03/10/嵌入式SQL/index.html">
+<meta property="og:site_name" content="Oneway">
+<meta property="og:description" content="C语言仍然是一门应用广泛的编程语言，具有简单、高效的优点。而且C语言可以作为我们学习其他编程语言的一个基础。因此编程人员学好C语言是很必要的。那么大家在使用C语言开发项目的过程中是否遇到过使用数据库的问题呢？你是怎么解决的呢？今天我给大家简单介绍嵌入式SQL（Embedded Structured Query Language）技术，顾名思义就是可以嵌入到编程语言中的SQL。">
+<meta property="og:image" content="http://yoursite.com/images/esqldg.png">
+<meta property="og:updated_time" content="2016-03-10T13:27:01.730Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="嵌入式SQL">
+<meta name="twitter:description" content="C语言仍然是一门应用广泛的编程语言，具有简单、高效的优点。而且C语言可以作为我们学习其他编程语言的一个基础。因此编程人员学好C语言是很必要的。那么大家在使用C语言开发项目的过程中是否遇到过使用数据库的问题呢？你是怎么解决的呢？今天我给大家简单介绍嵌入式SQL（Embedded Structured Query Language）技术，顾名思义就是可以嵌入到编程语言中的SQL。">
+<meta name="twitter:image" content="http://yoursite.com/images/esqldg.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> 嵌入式SQL | Oneway </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-hk">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?81c27a184af6c50f4a7a0b417db95247";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Oneway</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">My Blog</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-主页 fa-fw"></i> <br />
+            
+            首頁
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-分类页 fa-fw"></i> <br />
+            
+            分類
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-关于页面 fa-fw"></i> <br />
+            
+            關於
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-归档页 fa-fw"></i> <br />
+            
+            歸檔
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-标签页 fa-fw"></i> <br />
+            
+            標籤
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="st-search-show-outputs">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            檢索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'aKig42tWbAu3z-LZz47P','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                嵌入式SQL
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">發表於</span>
+            <time itemprop="dateCreated" datetime="2016-03-10T17:02:05+08:00" content="2016-03-10">
+              2016-03-10
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分類於</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/DB/" itemprop="url" rel="index">
+                    <span itemprop="name">DB</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/03/10/嵌入式SQL/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/03/10/嵌入式SQL/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>C语言仍然是一门应用广泛的编程语言，具有简单、高效的优点。而且C语言可以作为我们学习其他编程语言的一个基础。因此编程人员学好C语言是很必要的。<br>那么大家在使用C语言开发项目的过程中是否遇到过使用数据库的问题呢？你是怎么解决的呢？<br>今天我给大家简单介绍嵌入式SQL（Embedded Structured Query Language）技术，顾名思义就是可以嵌入到编程语言中的SQL。<br><a id="more"></a></p>
+<hr>
+<h1 id="大纲"><a href="#大纲" class="headerlink" title="大纲"></a>大纲</h1><p><img src="/images/esqldg.png" alt="大纲"></p>
+<hr>
+<h1 id="一、什么是嵌入式SQL"><a href="#一、什么是嵌入式SQL" class="headerlink" title="一、什么是嵌入式SQL"></a>一、什么是嵌入式SQL</h1><p>SQL是一种双重式语言，它既是一种用于查询和更新的交互式数据库语言，又是一种应用程序进行数据库访问时所采取的编程式数据库语言。SQL语言在这两种方式中的大部分语法是相同的。在编写访问数据库的程序时，必须从普通的编程语言开始（如C语言），再把SQL加入到程序中。所以，嵌入式SQL语言就是将SQL语句直接嵌入到程序的源代码中，与其他程序设计语言语句混合。专用的SQL预编译程序将嵌入的SQL语句转换为能被程序设计语言（如C语言）的编译器识别的函数调用。然后，C编译器编译源代码为可执行程序。<br>当然，嵌入SQL语句完成的功能也可以通过应用程序接口（API）实现。通过API的调用，可以将SQL语句传递到DBMS，并用API调用返回查询结果。这个方法不需要专用的预编译程序。</p>
+<hr>
+<h1 id="二、嵌入式SQL的组成元素"><a href="#二、嵌入式SQL的组成元素" class="headerlink" title="二、嵌入式SQL的组成元素"></a>二、嵌入式SQL的组成元素</h1><p>以IBM的DB2嵌入SQL为例，来看看嵌入SQL语句的组成元素。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line">#include &lt;stdlib.h&gt;</span><br><span class="line">#include &lt;string.h&gt;</span><br><span class="line">#include &quot;util.h&quot;</span><br><span class="line">#include &lt;sqlca.h&gt;</span><br><span class="line">EXEC SQL INCLUDE SQLCA;  //（1）</span><br><span class="line">int main()</span><br><span class="line"> &#123;</span><br><span class="line">   EXEC SQL BEGIN DECLARE SECTION; //（2）</span><br><span class="line">      char firstname[13];</span><br><span class="line">      char userid[9];</span><br><span class="line">      char passwd[19];</span><br><span class="line">   EXEC SQL END DECLARE SECTION;</span><br><span class="line">   EXEC SQL CONNECT TO sample; //（3）</span><br><span class="line">   EXEC SQL SELECT FIRSTNME INTO :firstname </span><br><span class="line">              FROM employee</span><br><span class="line">              WHERE LASTNAME = &apos;JOHNSON&apos;;//（4）</span><br><span class="line">   printf( &quot;First name = %s\n&quot;, firstname );</span><br><span class="line">   EXEC SQL CONNECT RESET;  //（5）</span><br><span class="line">   return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<ol>
+<li>(1)中的include SQLCA语句定义并描述了SQLCA的结构。 SQLCA用于应用程序和数据库之间的通讯，其中的SQLCODE返回SQL语句执行后的结果状态。</li>
+<li>(2)在BEGIN DECLARE SECTION和END DECLARE SECTION之间定义了宿主变量。宿主变量可被SQL语句引用，也可以被C语言语句引用。它用于将程序中的数据通过SQL语句传给数据库管理器，或从数据库管理器接收查询的结果。在SQL语句中，宿主变量前均有“：”标志以示区别。</li>
+<li>(3)在每次访问数据库之前必须做CONNECT操作，以连接到某一个数据库上。这时，应该保证数据库实例已经启动。</li>
+<li>(4)是一条选择语句。它将表employee中的LASTNAME为“JOHNSON”的行数据的FIRSTNAME查出，并将它放在firstname变量中。该语句返回一个结果。可以通过游标返回多个结果。当然，也可以包含update、insert和delete语句。</li>
+<li>(5)最后断开数据库的连接。<br>从上例看出，每条嵌入式SQL语句都用EXEC SQL开始，表明它是一条SQL语句。这也是告诉预编译器在EXEC SQL和“；”之间是嵌入SQL语句。</li>
+</ol>
+<hr>
+<h1 id="三、静态SQL和动态SQL"><a href="#三、静态SQL和动态SQL" class="headerlink" title="三、静态SQL和动态SQL"></a>三、静态SQL和动态SQL</h1><p>嵌入SQL语言，分为静态SQL语言和动态语言两类。</p>
+<h2 id="静态SQL语言"><a href="#静态SQL语言" class="headerlink" title="静态SQL语言"></a>静态SQL语言</h2><p>就是在编译时已经确定了引用的表和列。宿主变量不改变表和列信息。可以使用主变量改变查询参数值，但是不能用主变量代替表名或列名。</p>
+<h2 id="动态SQL语言"><a href="#动态SQL语言" class="headerlink" title="动态SQL语言"></a>动态SQL语言</h2><p>就是不在编译时确定SQL的表和列，而是让程序在运行时提供，并将SQL语句文本传给DBMS执行。<br>静态SQL语句在编译时已经生成执行计划。而动态SQL语句，只有在执行时才产生执行计划。动态SQL语句首先执行PREPARE语句要求DBMS分析、确认和优化语句，并为其生成执行计划。DBMS还设置SQLCODE以表明语句中发现的错误。当程序执行完“PREPARE”语句后，就可以用EXECUTE语句执行执行计划，并设置SQLCODE，以表明完成状态。</p>
+<hr>
+<h1 id="四、SQLCA-amp-SQLDA"><a href="#四、SQLCA-amp-SQLDA" class="headerlink" title="四、SQLCA&amp;SQLDA"></a>四、SQLCA&amp;SQLDA</h1><h2 id="SQLCA（-SQL-Communication-Area-）"><a href="#SQLCA（-SQL-Communication-Area-）" class="headerlink" title="SQLCA（ SQL Communication Area ）"></a>SQLCA（ SQL Communication Area ）</h2><p>应用程序执行时，每执行一条SQL语句，就返回一个状态符和一些附加信息。这些信息反映了SQL语句的执行情况，它有助于用户分析应用程序的错误所在。这些信息都存放在sqlca.h的sqlca结构中。如果一个源文件中包含SQL语句，则必须要在源程序中定义一个SQLCA结构（struct sqlca），而且名为SQLCA。最简单的定义方法是在源文件中加入一些语句：EXEC SQL  INCLUDE sqlca.h。每个数据库产品都提供了SQLCA结构。<br>下面是SQLCA结构中常用的变量和作用：</p>
+<h3 id="sqlcode"><a href="#sqlcode" class="headerlink" title="sqlcode"></a>sqlcode</h3><p>long   包含最近一次语句执行的返回代码<br>SQLCA结构中最重要的部分是SQLCODE变量。在执行每条嵌入式SQL语句时，DBMS在SQLCA中设置变量SQLCODE值，以指明语句的完成状态：<br>1、 0         该语句成功执行，无任何错误或报警。<br>2、<0 出现了严重错误。="" 3、="">0        出现了报警信息。<br>4、100     没有数据存在。在FETCH语句中，表示到达结果集的末尾。在UPDATE、 DELETE、INSERT语句中，表示没有满足条件的数据。</0></p>
+<h3 id="sqlerrd-6"><a href="#sqlerrd-6" class="headerlink" title="sqlerrd[6]"></a>sqlerrd[6]</h3><p>long   警告或错误的详细信息。[2]中存放影响行的个数</p>
+<h3 id="SQLDA"><a href="#SQLDA" class="headerlink" title="SQLDA"></a>SQLDA</h3><p>我们知道，动态SQL语句在编译时可能不知道有多少列信息。在嵌入SQL语句中，这些不确定的数据是通过SQLDA完成的。SQLDA的结构非常灵活，在该结构的固定部分，指明了多少列等信息，在该结构的后面有一个可变长的结构，说明每列的信息。在从数据库获得数据时，就可以采用SQLDA来获得每行的数据。各个数据库产品的SQLDA结构都不完全相同。<br>SQLDA存放了输出数据的信息，或存放了输入数据的信息。 ORACLE的数据类型分成两种情况：内部数据类型和外部数据类型。ORACLE的内部数据类型是ORACLE在数据库中存放数据的类型。<br>内部数据类型       代码           C数据类型<br>VARCHAR2         1            char[n]<br>NUMBER             2            char[n] (n 22)<br>INTEGER             3            int<br>FLOAT                  4            float<br>STRING                5            char[n+1]<br>LONG                    8            char[n]<br>DATE                   12           char[n]</p>
+<hr>
+<h1 id="五、ORACLE数据库的嵌入式SQL"><a href="#五、ORACLE数据库的嵌入式SQL" class="headerlink" title="五、ORACLE数据库的嵌入式SQL"></a>五、ORACLE数据库的嵌入式SQL</h1><h2 id="宿主变量和指示符"><a href="#宿主变量和指示符" class="headerlink" title="宿主变量和指示符"></a>宿主变量和指示符</h2><p>同其他数据库管理器一样，ORACLE使用宿主变量传递数据库中的数据和状态信息到应用程序，应用程序也通过宿主变量传递数据到ORACLE数据库。根据上面两种功能，宿主变量分为输出宿主变量和输入宿主变量。在SELECT  INTO和FETCH语句之后的宿主变量称作“输出宿主变量”，这是因为从数据库传递列数据到应用程序。除了SELECT  INTO和FETCH语句外的其他SQL语句中的宿主变量，称为“输入宿主变量”。这是因为从应用程序向数据库输入值。<br>大多数程序设计语言（如C）都不支持NULL。所以对NULL的处理，一定要在SQL中完成。我们可以使用主机指示符变量来解决这个问题。在嵌入式SQL语句中，宿主变量和指示符变量共同规定一个单独的SQL类型值。指示符变量是一个2字节的整数。<br>针对输入宿主变量和输出宿主变量，指示变量共有下面几种情况：</p>
+<h3 id="同输入宿主变量一起使用时："><a href="#同输入宿主变量一起使用时：" class="headerlink" title="同输入宿主变量一起使用时："></a>同输入宿主变量一起使用时：</h3><p>-1      Oracle将null赋值给列，即宿主变量应该假设为NULL。<br>>=0   Oracle将宿主变量的实际值赋值给列。</p>
+<h3 id="同输出宿主变量一起使用时："><a href="#同输出宿主变量一起使用时：" class="headerlink" title="同输出宿主变量一起使用时："></a>同输出宿主变量一起使用时：</h3><p>-1      表示该列的输出值为NULL。<br>0      Oracle已经将列的值赋给了宿主变量。列值未做截断。<br>>0     Oracle将列的值截断，并赋给了宿主变量。指示变量中存放了这个列的实际长度。 ( 输出’&gt;’需要转义字符’\’ )<br>-2      Oracle将列的值截断，并赋给了宿主变量。但是这个列的实际长度不能确定</p>
+<h2 id="增删改查"><a href="#增删改查" class="headerlink" title="增删改查"></a>增删改查</h2><h3 id="查询数据"><a href="#查询数据" class="headerlink" title="查询数据"></a>查询数据</h3><p>如果是单行查询，则应该使用SELECT  INTO语句。如果是多行查询，应该使用游标或宿主变量数组。单行查询的一个例子：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">  EXEC SQL SELECT ename, job, sal + 2000 </span><br><span class="line">  	INTO :emp_name, :job_title, :salary </span><br><span class="line">FROM emp </span><br><span class="line">WHERE empno = :emp_number;</span><br></pre></td></tr></table></figure></p>
+<p>在嵌入SQL语句中，也可以使用子查询。如：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">EXEC SQL INSERT INTO emp2 (empno, ename, sal, deptno) </span><br><span class="line">SELECT empno, ename, sal, deptno FROM emp </span><br><span class="line">	WHERE job = :job_title;</span><br></pre></td></tr></table></figure></p>
+<h3 id="插入数据"><a href="#插入数据" class="headerlink" title="插入数据"></a>插入数据</h3><p>使用INSERT语句插入数据。其语法同ANSI SQL语法类似。如：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">EXEC SQL INSERT INTO emp (empno, ename, sal, deptno) </span><br><span class="line">VALUES (:emp_number, :emp_name, :salary, :dept_number);</span><br></pre></td></tr></table></figure></p>
+<h3 id="更新数据"><a href="#更新数据" class="headerlink" title="更新数据"></a>更新数据</h3><p>使用UPDATE语句更新数据。其语法同ANSI SQL语法类似。如：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">EXEC SQL UPDATE emp SET sal = :salary, comm = :commission </span><br><span class="line">WHERE empno = :emp_number;</span><br></pre></td></tr></table></figure></p>
+<h3 id="删除数据"><a href="#删除数据" class="headerlink" title="删除数据"></a>删除数据</h3><p>使用DELETE语句删除数据。其语法同ANSI SQL语法类似。如：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">EXEC SQL DELETE FROM emp </span><br><span class="line">WHERE deptno = :dept_number;</span><br></pre></td></tr></table></figure></p>
+<h2 id="游标"><a href="#游标" class="headerlink" title="游标"></a>游标</h2><p>用嵌入式SQL语句查询数据分成两类情况。一类是单行结果，一类是多行结果。对于单行结果，可以使用SELECT INTO语句；对于多行结果，你必须使用游标来完成。游标是一个与SELECT语句相关联的符号名，它使用户可逐行访问由ORACLE返回的结果集。使用游标，应该包含以下四个步骤。</p>
+<h3 id="定义游标"><a href="#定义游标" class="headerlink" title="定义游标"></a>定义游标</h3><p>使用DECLARE语句完成。如：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">EXEC SQL DECLARE emp_cursor CURSOR FOR </span><br><span class="line">      SELECT ename  FROM emp  WHERE deptno = :dept_number;</span><br></pre></td></tr></table></figure></p>
+<p>值得注意的是，不能在同一个文件中定义两个相同名字的游标。游标的作用范围是全局的。</p>
+<h3 id="打开游标"><a href="#打开游标" class="headerlink" title="打开游标"></a>打开游标</h3><p>使用OPEN语句完成。如：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">EXEC SQL OPEN emp_cursor;</span><br></pre></td></tr></table></figure></p>
+<h3 id="取一行值"><a href="#取一行值" class="headerlink" title="取一行值"></a>取一行值</h3><p>使用FETCH语句完成。如：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">EXEC SQL FETCH emp_cursor INTO :emp_name;</span><br></pre></td></tr></table></figure></p>
+<h3 id="关闭游标"><a href="#关闭游标" class="headerlink" title="关闭游标"></a>关闭游标</h3><p>使用CLOSE语句完成。它完成的功能是：释放资源，如占用内存、锁等。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">EXEC SQL CLOSE emp_cursor;</span><br></pre></td></tr></table></figure></p>
+<h3 id="使用游标修改数据"><a href="#使用游标修改数据" class="headerlink" title="使用游标修改数据"></a>使用游标修改数据</h3><p>我们可以使用CURRENT OF子句来完成修改数据。如：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">EXEC SQL DECLARE emp_cursor CURSOR FOR </span><br><span class="line">     SELECT ename, sal FROM emp WHERE job = &apos;CLERK&apos; </span><br><span class="line">     FOR UPDATE OF sal; </span><br><span class="line">EXEC SQL OPEN emp_cursor; </span><br><span class="line">EXEC SQL WHENEVER NOT FOUND GOTO ... </span><br><span class="line">for (;;) &#123;</span><br><span class="line">    EXEC SQL FETCH emp_cursor INTO :emp_name, :salary; </span><br><span class="line">    EXEC SQL UPDATE emp SET sal = :new_salary </span><br><span class="line">         WHERE CURRENT OF emp_cursor; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>值得注意的是，在使用CURRENT OF子句来完成修改数据时，在OPEN时会对数据加上排它锁。这个锁直到有COMMIT或ROLLBACK语句时才释放。</p>
+<h3 id="游标示例"><a href="#游标示例" class="headerlink" title="游标示例"></a>游标示例</h3><pre><code>/* 定义游标 */ 
+   EXEC SQL DECLARE emp_cursor CURSOR FOR 
+        SELECT ename, job 
+        FROM emp 
+        WHERE empno = :emp_number 
+        FOR UPDATE OF job; 
+EXEC SQL OPEN emp_cursor; //打开游标 
+ /* break if the last row was already fetched */ 
+   EXEC SQL WHENEVER NOT FOUND DO break; 
+for (;;) //循环取值
+   { 
+      EXEC SQL FETCH emp_cursor INTO :emp_name, :job_title; 
+ /* 更新当前游标所在的行的数据*/ 
+       EXEC SQL UPDATE emp 
+           SET job = :new_job_title 
+           WHERE CURRENT OF emp_cursor; 
+   } 
+/* 关闭游标 */ 
+   EXEC SQL CLOSE emp_cursor; 
+   EXEC SQL COMMIT WORK RELEASE;
+</code></pre><hr>
+<p>动态SQL方面的知识了解较少。。。</p>
+<hr>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Database/" rel="tag">#Database</a>
+          
+            <a href="/tags/SQL/" rel="tag">#SQL</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/03/09/hello-world/" rel="next" title="Hello World">
+                <i class="fa fa-chevron-left"></i> Hello World
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/03/10/嵌入式SQL/"
+           data-title="嵌入式SQL" data-url="http://yoursite.com/2016/03/10/嵌入式SQL/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            本站概覽
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/avatar.jpg"
+               alt="Oneway" />
+          <p class="site-author-name" itemprop="name">Oneway</p>
+          <p class="site-description motion-element" itemprop="description">To be simple.</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">2</span>
+              <span class="site-state-item-name">文章</span>
+            </a>
+          </div>
+          
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">分類</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">標籤</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="http://wwei25.cn" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/wwei25" target="_blank">
+                  
+                    <i class="fa fa-globe"></i> github
+                  
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/aabcehmuh" target="_blank">
+                  
+                    <i class="fa fa-globe"></i> 新浪微博
+                  
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+            <p class="site-author-name"></p>
+            
+              <span class="links-of-author-item">
+                <a href="http://wwei25.cn/" target="_blank">WWEI25.CN</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://oneway.ren/" target="_blank">ONEWAY</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://wjing.cn/" target="_blank">WJING.CN</a>
+              </span>
+            
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#大纲"><span class="nav-number">1.</span> <span class="nav-text">大纲</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#一、什么是嵌入式SQL"><span class="nav-number">2.</span> <span class="nav-text">一、什么是嵌入式SQL</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#二、嵌入式SQL的组成元素"><span class="nav-number">3.</span> <span class="nav-text">二、嵌入式SQL的组成元素</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#三、静态SQL和动态SQL"><span class="nav-number">4.</span> <span class="nav-text">三、静态SQL和动态SQL</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#静态SQL语言"><span class="nav-number">4.1.</span> <span class="nav-text">静态SQL语言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#动态SQL语言"><span class="nav-number">4.2.</span> <span class="nav-text">动态SQL语言</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#四、SQLCA-amp-SQLDA"><span class="nav-number">5.</span> <span class="nav-text">四、SQLCA&SQLDA</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#SQLCA（-SQL-Communication-Area-）"><span class="nav-number">5.1.</span> <span class="nav-text">SQLCA（ SQL Communication Area ）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#sqlcode"><span class="nav-number">5.1.1.</span> <span class="nav-text">sqlcode</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sqlerrd-6"><span class="nav-number">5.1.2.</span> <span class="nav-text">sqlerrd[6]</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SQLDA"><span class="nav-number">5.1.3.</span> <span class="nav-text">SQLDA</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#五、ORACLE数据库的嵌入式SQL"><span class="nav-number">6.</span> <span class="nav-text">五、ORACLE数据库的嵌入式SQL</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#宿主变量和指示符"><span class="nav-number">6.1.</span> <span class="nav-text">宿主变量和指示符</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#同输入宿主变量一起使用时："><span class="nav-number">6.1.1.</span> <span class="nav-text">同输入宿主变量一起使用时：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#同输出宿主变量一起使用时："><span class="nav-number">6.1.2.</span> <span class="nav-text">同输出宿主变量一起使用时：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#增删改查"><span class="nav-number">6.2.</span> <span class="nav-text">增删改查</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#查询数据"><span class="nav-number">6.2.1.</span> <span class="nav-text">查询数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#插入数据"><span class="nav-number">6.2.2.</span> <span class="nav-text">插入数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#更新数据"><span class="nav-number">6.2.3.</span> <span class="nav-text">更新数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#删除数据"><span class="nav-number">6.2.4.</span> <span class="nav-text">删除数据</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#游标"><span class="nav-number">6.3.</span> <span class="nav-text">游标</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#定义游标"><span class="nav-number">6.3.1.</span> <span class="nav-text">定义游标</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#打开游标"><span class="nav-number">6.3.2.</span> <span class="nav-text">打开游标</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#取一行值"><span class="nav-number">6.3.3.</span> <span class="nav-text">取一行值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关闭游标"><span class="nav-number">6.3.4.</span> <span class="nav-text">关闭游标</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用游标修改数据"><span class="nav-number">6.3.5.</span> <span class="nav-text">使用游标修改数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#游标示例"><span class="nav-number">6.3.6.</span> <span class="nav-text">游标示例</span></a></li></ol></li></ol></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Oneway</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 強力驅動
+</div>
+
+<div class="theme-info">
+  主題 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+
+  
+
+
+
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=0.5.0"></script>
+
+
+
+  
+  
+<script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    NexT.motion.middleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+
+      if (CONFIG.scheme !== 'Pisces' && (CONFIG.sidebar.display === 'post' || CONFIG.sidebar.display === 'always')) {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          NexT.utils.displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"wwei25cn"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+  
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+  </script>
+
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  </script>
+
+  
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+
+</body>
+</html>
