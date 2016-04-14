@@ -59,19 +59,45 @@
 
 
 
-<meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub.
-Quick">
+<meta name="description" content="title: PHP二维数组排序date: 2016/4/14 9:47:36tags:
+
+PHP
+Array
+Sortcategories: 
+PHP
+技术
+
+
+在项目任务中遇到了给二维数组排序的问题。私以为应该有现成的库函数可用，于是百度之。果不其然顺利解决问题，作文以记之。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hello World">
-<meta property="og:url" content="http://yoursite.com/2016/03/09/hello-world/index.html">
+<meta property="og:title" content="Oneway">
+<meta property="og:url" content="http://yoursite.com/2016/03/18/PHP二维数组排序/index.html">
 <meta property="og:site_name" content="Oneway">
-<meta property="og:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub.
-Quick">
-<meta property="og:updated_time" content="2016-03-09T13:39:45.147Z">
+<meta property="og:description" content="title: PHP二维数组排序date: 2016/4/14 9:47:36tags:
+
+PHP
+Array
+Sortcategories: 
+PHP
+技术
+
+
+在项目任务中遇到了给二维数组排序的问题。私以为应该有现成的库函数可用，于是百度之。果不其然顺利解决问题，作文以记之。">
+<meta property="og:image" content="http://yoursite.com/images/php_array.png">
+<meta property="og:updated_time" content="2016-04-14T01:47:48.460Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hello World">
-<meta name="twitter:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub.
-Quick">
+<meta name="twitter:title" content="Oneway">
+<meta name="twitter:description" content="title: PHP二维数组排序date: 2016/4/14 9:47:36tags:
+
+PHP
+Array
+Sortcategories: 
+PHP
+技术
+
+
+在项目任务中遇到了给二维数组排序的问题。私以为应该有现成的库函数可用，于是百度之。果不其然顺利解决问题，作文以记之。">
+<meta name="twitter:image" content="http://yoursite.com/images/php_array.png">
 
 
 
@@ -89,7 +115,7 @@ Quick">
   };
 </script>
 
-  <title> Hello World | Oneway </title>
+  <title>  | Oneway </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-hk">
@@ -267,7 +293,7 @@ Quick">
             
             
               
-                Hello World
+                
               
             
           </h1>
@@ -279,8 +305,8 @@ Quick">
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">發表於</span>
-            <time itemprop="dateCreated" datetime="2016-03-09T21:39:45+08:00" content="2016-03-09">
-              2016-03-09
+            <time itemprop="dateCreated" datetime="2016-03-18T13:43:03+08:00" content="2016-03-18">
+              2016-03-18
             </time>
           </span>
 
@@ -290,8 +316,8 @@ Quick">
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/03/09/hello-world/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/03/09/hello-world/" itemprop="commentsCount"></span>
+                <a href="/2016/03/18/PHP二维数组排序/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/03/18/PHP二维数组排序/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -313,15 +339,54 @@ Quick">
       
 
       
-        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
+        <hr>
+<p>title: PHP二维数组排序<br>date: 2016/4/14 9:47:36<br>tags:</p>
+<ul>
+<li>PHP</li>
+<li>Array</li>
+<li>Sort<br>categories: </li>
+<li>PHP</li>
+<li>技术</li>
+</ul>
+<hr>
+<p>在项目任务中遇到了给二维数组排序的问题。私以为应该有现成的库函数可用，于是百度之。果不其然顺利解决问题，作文以记之。<br><a id="more"></a><br>二维数组排序用到的是 <strong>array_multisort()</strong> 函数</p>
+<hr>
+<p>下面是<strong>PHP手册</strong>中的内容：</p>
+<p>####定义和用法<br>array_multisort() 函数对多个数组或多维数组进行排序。</p>
+<p>参数中的数组被当成一个表的列并以行来进行排序 - 这类似 SQL 的 ORDER BY 子句的功能。第一个数组是要排序的主要数组。数组中的行（值）比较为相同的话，就会按照下一个输入数组中相应值的大小进行排序，依此类推。</p>
+<p>第一个参数是数组，随后的每一个参数可能是数组，也可能是下面的排序顺序标志（排序标志用于更改默认的排列顺序）之一：<br>SORT_ASC - 默认，按升序排列。(A-Z)<br>SORT_DESC - 按降序排列。(Z-A) </p>
+<p>随后可以指定排序的类型：<br>SORT_REGULAR - 默认。将每一项按常规顺序排列。<br>SORT_NUMERIC - 将每一项按数字顺序排列。<br>SORT_STRING - 将每一项按字母顺序排列。 </p>
+<p>####语法<br>array_multisort(array1,sorting order,sorting type,array2,array3…)<br><img src="/images/php_array.png" alt=""></p>
+<p>####提示和注释<br>注释：字符串键名将被保留，但是数字键将被重新索引，从 0 开始，并以 1 递增。<br>注释：您可以在每个数组后设置排序顺序和排序类型。如果没有设置，每个数组参数会使用默认值。 </p>
+<p>####例子<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">$a1=array(&quot;Dog&quot;,&quot;Cat&quot;);</span><br><span class="line">$a2=array(&quot;Fido&quot;,&quot;Missy&quot;);</span><br><span class="line">array_multisort($a1,$a2);</span><br><span class="line">print_r($a1);</span><br><span class="line">print_r($a2);</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure></p>
+<p>输出<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Array ( [0] =&gt; Cat [1] =&gt; Dog )</span><br><span class="line">Array ( [0] =&gt; Missy [1] =&gt; Fido )</span><br></pre></td></tr></table></figure></p>
+<hr>
+<h2 id="我所使用的方法"><a href="#我所使用的方法" class="headerlink" title="我所使用的方法"></a>我所使用的方法</h2><pre><code>//    //排序函数
+public function my_sort($arrays,$sort_key,$sort_order,$sort_type=SORT_NUMERIC ){   
+        if(is_array($arrays)){   
+               foreach ($arrays as $array){   
+                    if(is_array($array)){   
+                            $key_arrays[] = $array[$sort_key];   
+                    }else{   
+                            return false;   
+                    }   
+                }//forearch   
+        }else{   
+                return false;   
+        }      
+        array_multisort($key_arrays,$sort_order,$sort_type,$arrays);   
+        return $arrays;   
+}
+//调用
+$node_res=$this-&gt;my_sort($node_array,&apos;hit_rate&apos;,SORT_DESC);
+</code></pre><p>先把要排序的key存到一个一维数组中，然后就可以使用array_multisort()这个函数，将数组按照key进行排序了，当然，这里的排序你完全可以不适用array_multisort()这个函数，仅仅通过foreach遍历也能达到这个效果</p>
+<hr>
+<p>另外在博客上看到有人用其他方法实现二维数组排序的，这里也列出来。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">    $data = array();</span><br><span class="line">    $data[] = array(&apos;volume&apos; =&gt; 67, &apos;edition&apos; =&gt; 2);</span><br><span class="line">    $data[] = array(&apos;volume&apos; =&gt; 86, &apos;edition&apos; =&gt; 1);</span><br><span class="line">    $data[] = array(&apos;volume&apos; =&gt; 85, &apos;edition&apos; =&gt; 6);</span><br><span class="line">    $data[] = array(&apos;volume&apos; =&gt; 98, &apos;edition&apos; =&gt; 2);</span><br><span class="line">    $data[] = array(&apos;volume&apos; =&gt; 86, &apos;edition&apos; =&gt; 6);</span><br><span class="line">    $data[] = array(&apos;volume&apos; =&gt; 67, &apos;edition&apos; =&gt; 7);</span><br><span class="line">    // 取得列的列表</span><br><span class="line">    foreach ($data as $key =&gt; $row)</span><br><span class="line">    &#123;</span><br><span class="line">        $volume[$key]  = $row[&apos;volume&apos;];</span><br><span class="line">        $edition[$key] = $row[&apos;edition&apos;];</span><br><span class="line">    &#125;</span><br><span class="line">    $ret = arraySort($data, &apos;volume&apos;, &apos;desc&apos;);</span><br><span class="line">    print_r($ret);</span><br><span class="line">    /**</span><br><span class="line">     * @desc arraySort php二维数组排序 按照指定的key 对数组进行排序</span><br><span class="line">     * @param array $arr 将要排序的数组</span><br><span class="line">     * @param string $keys 指定排序的key</span><br><span class="line">     * @param string $type 排序类型 asc | desc</span><br><span class="line">     * @return array</span><br><span class="line">     */</span><br><span class="line">    function arraySort($arr, $keys, $type = &apos;asc&apos;) &#123;</span><br><span class="line">        $keysvalue = $new_array = array();</span><br><span class="line">        foreach ($arr as $k =&gt; $v)&#123;</span><br><span class="line">            $keysvalue[$k] = $v[$keys];</span><br><span class="line">        &#125;</span><br><span class="line">        $type == &apos;asc&apos; ? asort($keysvalue) : arsort($keysvalue);//asort正向排序、arsort逆向排序</span><br><span class="line">        reset($keysvalue);//把数组的内部指针指向第一个元素，并返回这个元素的值</span><br><span class="line">        foreach ($keysvalue as $k =&gt; $v) &#123;</span><br><span class="line">           $new_array[$k] = $arr[$k];</span><br><span class="line">        &#125;</span><br><span class="line">        return $new_array;</span><br><span class="line">    &#125;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>这个自定义函数与系统函数的一个区别就是：自定义函数只支持针对某一个key的排序，如果要支持多个key的排序需要执行多次; 而系统函数array_multisort可以一次性对多个key且可以指定多个排序规则，系统函数还是相当强大的，推荐使用系统函数，毕竟是C底层实现的，这里只是举例说明如果通过自定义函数来对数组进行排序，当然这个自定义函数也可以继续扩展来支持更多的排序规则。在取排名、排行榜、成绩等场景中用到的还是非常多的。</p>
+<p>注：从上面的实现过程<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">foreach ($keysvalue as $k =&gt; $v) &#123;</span><br><span class="line">           $new_array[$k] = $arr[$k];</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure></p>
+<p>可以看出这个排序不支持key值相等的数组,换句话说也就是key需要是数组的唯一索引</p>
+<hr>
 
       
     </div>
@@ -339,12 +404,16 @@ Quick">
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2016/03/10/嵌入式SQL/" rel="next" title="嵌入式SQL">
+                <i class="fa fa-chevron-left"></i> 嵌入式SQL
+              </a>
+            
           </div>
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2016/03/10/嵌入式SQL/" rel="prev" title="嵌入式SQL">
-                嵌入式SQL <i class="fa fa-chevron-right"></i>
+              <a href="/2016/04/14/php-array/" rel="prev" title="php_array">
+                php_array <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -371,8 +440,8 @@ Quick">
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2016/03/09/hello-world/"
-           data-title="Hello World" data-url="http://yoursite.com/2016/03/09/hello-world/">
+      <div class="ds-thread" data-thread-key="2016/03/18/PHP二维数组排序/"
+           data-title="" data-url="http://yoursite.com/2016/03/18/PHP二维数组排序/">
       </div>
     
   </div>
@@ -511,7 +580,7 @@ Quick">
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Quick-Start"><span class="nav-number">1.</span> <span class="nav-text">Quick Start</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Create-a-new-post"><span class="nav-number">1.1.</span> <span class="nav-text">Create a new post</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Run-server"><span class="nav-number">1.2.</span> <span class="nav-text">Run server</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Generate-static-files"><span class="nav-number">1.3.</span> <span class="nav-text">Generate static files</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Deploy-to-remote-sites"><span class="nav-number">1.4.</span> <span class="nav-text">Deploy to remote sites</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#我所使用的方法"><span class="nav-number">1.</span> <span class="nav-text">我所使用的方法</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">
